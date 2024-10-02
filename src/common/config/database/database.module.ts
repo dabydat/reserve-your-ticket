@@ -1,9 +1,29 @@
 import { Module, DynamicModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { createDataSource, createDataSourceOptions } from './data.source';
-
+import { createDataSourceOptions } from './data.source';
 @Module({})
+/**
+ * The DatabaseModule class is responsible for configuring and providing the database connection
+ * settings for the application using TypeORM and NestJS.
+ *
+ * @remarks
+ * This module uses the `TypeOrmModule.forRootAsync` method to asynchronously configure the
+ * database connection settings. It imports the `ConfigModule` to access configuration values
+ * and uses a factory function to create the data source options.
+ *
+ * @example
+ * ```typescript
+ * import { DatabaseModule } from './database.module';
+ *
+ * @Module({
+ *   imports: [DatabaseModule.forRoot()],
+ * })
+ * export class AppModule {}
+ * ```
+ *
+ * @public
+ */
 export class DatabaseModule {
     static forRoot(): DynamicModule {
         return {

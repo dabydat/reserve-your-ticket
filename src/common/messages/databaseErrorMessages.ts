@@ -1,6 +1,10 @@
-import { BadRequestException } from "@nestjs/common";
-
-const databaseErrorMessages = {
+/**
+ * A mapping of PostgreSQL error codes to custom error messages and types.
+ * 
+ * The `databaseErrorMessages` object provides a way to translate PostgreSQL
+ * error codes into more readable and user-friendly error messages and types.
+ */
+export const databaseErrorMessages = {
     "23505": {
         databaseErrorType: "UNIQUE_CONSTRAINT_VIOLATION",
         databaseErrorMessage: "The value exists in the table."
@@ -16,9 +20,13 @@ const databaseErrorMessages = {
     "23502": {
         databaseErrorType: "NOT_NULL_VIOLATION",
         databaseErrorMessage: "The value cannot be null."
-    }
-}
-
-export const handleDatabaseErrorMessages = (error: any) => {
-    return new BadRequestException({ ...databaseErrorMessages[error.code], message: error.detail ? error.detail : error.message });
+    },
+    "42703": {
+        databaseErrorType: "ERROR_MISSING_COLUMN_NAME",
+        databaseErrorMessage: "The column name is missing."
+    },
+    "42P01": {
+        databaseErrorType: "ERROR_MISSING_TABLE_NAME",
+        databaseErrorMessage: "The table name does not exist or is missing."
+    },
 }

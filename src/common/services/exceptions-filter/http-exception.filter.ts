@@ -1,10 +1,22 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from "@nestjs/common";
 import { CustomLogger } from "../logger/custom.logger";
-import { LogMetadata } from "../logger/interfaces/LogMetadata.interface";
+import { ILogMetadata } from "../logger/interfaces/ILogMetadata";
+
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
     constructor(@Inject(CustomLogger) private readonly customLogger: CustomLogger) { }
+    /**
+     * Handles HTTP exceptions thrown during request processing.
+     * 
+     * @param exception - The caught HttpException instance.
+     * @param host - The ArgumentsHost containing request and response objects.
+     * 
+     * This method extracts the request and response objects from the ArgumentsHost,
+     * retrieves the client's IP address, and constructs a JSON response based on the exception.
+     * It logs the error details including the client's IP, request URL, and stack trace.
+     * Finally, it sends the constructed JSON response with the appropriate HTTP status code.
+     */
     catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const req = ctx.getRequest();
@@ -27,9 +39,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return xForwardedFor.trim();
     }
 
+    /**
+     * Builds a response object from an HttpException.
+     * 
+     * @param exception - The HttpException instance to extract the response from.
+     * @returns An object containing the status code, timestamp, and any additional 
+     *          metadata from the exception response.
+     */
     buildResponse(exception: HttpException): Object {
         const responseException = exception.getResponse();
-        let logMetadataException: LogMetadata = {
+        let logMetadataException: ILogMetadata = {
             statusCode: exception.getStatus(),
             timestamp: new Date().toISOString(),
         }

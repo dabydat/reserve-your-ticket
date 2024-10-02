@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
-import { CustomLogger } from 'src/services/logger/custom.logger';
-import { LogMetadata } from '../interfaces/LogMetadata.interface';
+import { CustomLogger } from 'src/common/services/logger/custom.logger';
+import { ILogMetadata } from '../interfaces/ILogMetadata';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -19,10 +19,10 @@ export class LoggingInterceptor implements NestInterceptor {
     const controller = context.getClass().name; // Obtener la clase del controlador
     const method = context.getHandler().name; // Obtener el identificador del método del controlador
     const now = Date.now();
-    const metadata: LogMetadata = {
+    const metadata: ILogMetadata = {
       clientIp, controller, method, url: req.url, timestamp: `${Date.now() - now}ms`
     }
-    this.customLogger.info(metadata);
+    // this.customLogger.info(metadata);
     return next.handle().pipe(
       tap(() => { this.customLogger.info({ ...metadata, timestamp: `${Date.now() - now}ms` }); }));
   }

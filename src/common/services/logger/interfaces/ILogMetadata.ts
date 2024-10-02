@@ -1,10 +1,10 @@
-export interface RequestData {
+export interface IRequestData {
   controller?: string;
   method?: string;
   miliseconds?: string;
 }
 
-export interface ErrorData {
+export interface IErrorData {
   statusCode?: number;
   message?: string;
   stackTrace?: string;
@@ -12,7 +12,7 @@ export interface ErrorData {
   validationError?: string[];
 }
 
-export interface LogMetadata extends RequestData, ErrorData {
+export interface ILogMetadata extends IRequestData, IErrorData {
   clientIp?: string;
   url?: string;
 }

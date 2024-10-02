@@ -2,7 +2,7 @@ import { appendFile, writeFile, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 import { Injectable } from '@nestjs/common';
-import { LogMetadata } from './interfaces/LogMetadata.interface';
+import { ILogMetadata } from './interfaces/ILogMetadata';
 import { LogColorsEnum } from './enums/LogColors.enum';
 import { LogLevelEnum } from './enums/LogLevel.enum';
 
@@ -25,40 +25,40 @@ export class CustomLogger {
     /**
      * Logs an error message with the given metadata and context.
      *
-     * @param {LogMetadata} metadata - the metadata for the error log
+     * @param {ILogMetadata} metadata - the metadata for the error log
      * @return {void} 
      */
-    public log(metadata: LogMetadata): void {
+    public log(metadata: ILogMetadata): void {
         this.createLog(LogLevelEnum.LOG, metadata);
     }
 
     /**
      * Logs an error message with the given metadata and context.
      *
-     * @param {LogMetadata} metadata - the metadata for the error log
+     * @param {ILogMetadata} metadata - the metadata for the error log
      * @return {void} 
      */
-    public error(metadata: LogMetadata): void {
+    public error(metadata: ILogMetadata): void {
         this.createLog(LogLevelEnum.ERROR, metadata);
     }
 
     /**
      * Warns about the log with the given metadata and context.
      *
-     * @param {LogMetadata} metadata - the metadata for the log
+     * @param {ILogMetadata} metadata - the metadata for the log
      * @return {void} 
      */
-    public warn(metadata: LogMetadata): void {
+    public warn(metadata: ILogMetadata): void {
         this.createLog(LogLevelEnum.WARNING, metadata);
     }
 
     /**
      * Logs an information message.
      *
-     * @param {LogMetadata} metadata - the metadata for the log
+     * @param {ILogMetadata} metadata - the metadata for the log
      * @return {void} 
      */
-    public info(metadata: LogMetadata): void {
+    public info(metadata: ILogMetadata): void {
         this.createLog(LogLevelEnum.INFO, metadata);
     }
 
@@ -66,9 +66,9 @@ export class CustomLogger {
      * A private function for logging messages at different levels.
      *
      * @param {LogLevelEnum} level - the log level
-     * @param {LogMetadata} metadata - the log metadata
+     * @param {ILogMetadata} metadata - the log metadata
      */
-    private createLog(level: LogLevelEnum, metadata: LogMetadata): void {
+    private createLog(level: LogLevelEnum, metadata: ILogMetadata): void {
         let logColor = '';
         let logLevel = '';
         let consoleFunc = (e: string) => { };
@@ -106,10 +106,10 @@ export class CustomLogger {
      *
      * @param {string} logColor - the color of the log entry
      * @param {string} logLevel - the level of the log entry
-     * @param {LogMetadata} metadata - the metadata for the log entry
+     * @param {ILogMetadata} metadata - the metadata for the log entry
      * @returns {string} the generated log entry
      */
-    private getLogEntry(logColor: string, logLevel: string, metadata: LogMetadata): string {
+    private getLogEntry(logColor: string, logLevel: string, metadata: ILogMetadata): string {
         const metadataEntries = Object.entries(metadata).map(([key, value]) => ` - ${key}: ${value}`);
         const message = metadataEntries.join('\n');
         return `\n${LogColorsEnum.green}[Dalogger] [${this.generateCorrelationId()}] - ${LogColorsEnum.close}${this.generateDate()} ${logColor} ${logLevel} ${message} ${LogColorsEnum.green} +${metadata.timestamp}`;
