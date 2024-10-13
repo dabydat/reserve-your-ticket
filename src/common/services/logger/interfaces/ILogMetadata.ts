@@ -5,7 +5,7 @@ export interface IRequestData {
 }
 
 export interface IErrorData {
-  statusCode?: number;
+  statusCode?: number | string;
   message?: string;
   stackTrace?: string;
   timestamp?: string;
