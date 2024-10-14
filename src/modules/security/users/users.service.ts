@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { IUser, IUserDto } from 'src/common/interfaces/IUser';
+import { IUserDto } from 'src/common/interfaces/IUser';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationDTO } from 'src/common/config/dtos/pagination.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,8 +31,10 @@ export class UsersService {
         return this.userRepository.save(user);
     }
 
-    async getAllUsers(): Promise<IUserDto[]> {
-        return this.userRepository.find();
+    async getAllUsers(paginationDto: PaginationDTO): Promise<IUserDto[]> {
+        const { limit, offset } = paginationDto;
+        const users = await this.userRepository.find({ skip: offset, take: limit, });
+        return users;
     }
 
     async getUserById(id: number): Promise<IUserDto> {

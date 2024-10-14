@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Put, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Param, Body, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IUser } from 'src/common/interfaces/IUser';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
+import { PaginationDTO } from 'src/common/config/dtos/pagination.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -37,8 +38,8 @@ export class UsersController {
     @Get()
     @ApiOperation({ summary: 'Get all users' })
     @ApiResponse({ status: 200, description: 'Return all users.' })
-    getAllUsers(): Promise<IUser[]> {
-        return this.usersService.getAllUsers();
+    getAllUsers(@Query() paginationDto: PaginationDTO): Promise<IUser[]> {
+        return this.usersService.getAllUsers(paginationDto);
     }
 
     @Get(':id')
