@@ -58,7 +58,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             if (typeof responseException === 'object') {
                 logMetadataException = { ...logMetadataException, ...responseException };
             }
-        } else if (exception instanceof DatabaseError) {
+        } else if (exception instanceof DatabaseError) {            
             logMetadataException = { ...logMetadataException, message: exception.message, statusCode: exception.code, stackTrace: exception.detail };
         }
 
