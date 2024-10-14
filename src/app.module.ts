@@ -5,11 +5,13 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { CustomLogger } from "./common/services/logger/custom.logger";
 import { HttpExceptionFilter } from "./common/services/exceptions-filter/http-exception.filter";
 import { DatabaseModule } from "./common/config/database/database.module";
+import { UsersModule } from "./modules/security/users/users.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    DatabaseModule.forRoot()
+    DatabaseModule.forRoot(),
+    UsersModule
   ],
   controllers: [],
   providers: [
